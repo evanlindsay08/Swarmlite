@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SwarmLite</title>
+    <link rel="icon" type="image/png" href="images/SL.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-green: #41936a;
+            --dark-bg: #0f1014;
+            --box-bg: rgba(20, 22, 28, 0.95);
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 15px;
+            height: calc(100vh - 50px);
+            overflow: hidden;
+        }
+
+        .top-nav {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px;
+            border: 1px solid rgba(65, 147, 106, 0.2);
+        }
+
+        .nav-left {
+            color: var(--neon-green);
+            font-weight: 500;
+            letter-spacing: 0.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-icon {
+            font-size: 0.9rem;
+        }
+
+        .nav-center a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.1rem;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            margin: 0 15px;
+        }
+
+        .nav-center a.active {
+            color: var(--neon-green);
+            opacity: 1;
+        }
+
+        .connect-btn {
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .connect-btn:hover {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px rgba(65, 147, 106, 0.3);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto auto auto auto auto auto !important;
+            gap: 6px;
+            margin-top: 15px;
+            height: calc(100vh - 150px);
+        }
+
+        .grid-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(65, 147, 106, 0.2);
+            border-radius: 8px;
+            padding: 6px 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .grid-box:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px rgba(65, 147, 106, 0.1);
+        }
+
+        h3 {
+            color: var(--neon-green);
+            font-size: 0.9rem;
+            letter-spacing: 0.1rem;
+            font-weight: 400;
+            margin-top: 4px;
+            margin-bottom: 10px;
+        }
+
+        .value {
+            color: var(--neon-green);
+            font-size: 1.2rem;
+            margin: 3px 0;
+            font-weight: 300;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-num {
+            background: rgba(65, 147, 106, 0.1);
+            color: var(--neon-green);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            letter-spacing: 0.05rem;
+        }
+
+        .step-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            letter-spacing: 0.05rem;
+        }
+
+        .video-space {
+            position: relative;
+            grid-column: 2 / span 2;
+            grid-row: 2 / span 4;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px dashed rgba(65, 147, 106, 0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .video-space video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .video-space.loaded video {
+            opacity: 1;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.8);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .play-button i {
+            font-size: 24px;
+            margin-left: 4px;
+        }
+
+        .play-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .video-space.playing .play-button {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .metrics-title {
+            grid-column: 1 / span 2;
+            border: none;
+            background: none;
+            text-align: left;
+            padding: 10px 20px;
+        }
+
+        .response-time, .accuracy-rate {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .metrics-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            padding: 6px;
+            margin-bottom: 6px;
+        }
+
+        .metric-box {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(65, 147, 106, 0.2);
+            border-radius: 6px;
+            padding: 6px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            margin-top: 15px;
+            height: 100%;
+            padding: 10px 0;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        h4 {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.75rem;
+            letter-spacing: 0.1rem;
+            font-weight: 400;
+            margin-bottom: 5px;
+        }
+
+        .contract-box {
+            grid-column: 1 / span 3;
+            padding: 5px 20px;
+            display: flex;
+            justify-content: center;
+            height: 50px;
+            margin-bottom: 0;
+        }
+
+        .contract-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+            width: 100%;
+            padding: 0 40px;
+        }
+
+        .info-item {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 100px;
+        }
+
+        .info-item:last-child {
+            min-width: 400px;
+        }
+
+        .info-item h4 {
+            color: var(--neon-green);
+            margin: 0;
+            font-size: 0.8rem;
+            letter-spacing: 0.1rem;
+        }
+
+        .info-item p {
+            font-size: 0.8rem;
+            margin: 5px 0;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .contract-address {
+            font-family: monospace;
+            font-size: 1rem;
+            letter-spacing: 0.05rem;
+        }
+
+        .step-desc {
+            color: var(--neon-green);
+            font-size: 0.75rem;
+            letter-spacing: 0.05rem;
+            position: relative;
+            padding-top: 15px;
+        }
+
+        .step-desc::before {
+            content: '↓';
+            position: absolute;
+            top: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--neon-green);
+            opacity: 0.5;
+        }
+
+        .protocol {
+            display: flex;
+            flex-direction: column;
+            padding: 8px 30px;
+            height: auto;
+            flex-grow: 1;
+            grid-column: 2 / span 2;
+        }
+
+        .protocol h3 {
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            margin-top: 4px;
+        }
+
+        .protocol h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 1px;
+            background: rgba(65, 147, 106, 0.3);
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            height: 100%;
+            position: relative;
+            padding: 6px 0;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            flex: 1;
+        }
+
+        .step-num {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            background: rgba(65, 147, 106, 0.15);
+        }
+
+        .step-label {
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+
+        .step-desc {
+            color: var(--neon-green);
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        .step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neon-green);
+            font-size: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .configure-box {
+            display: none;
+        }
+
+        .configure-button {
+            width: calc(100% - 20px);
+            margin: 0 10px 6px 10px;
+            padding: 6px;
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .configure-button:hover {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px rgba(65, 147, 106, 0.3);
+        }
+
+        .timer-box {
+            grid-column: 1;
+            grid-row: 2;
+            padding: 10px !important;
+            height: fit-content;
+            margin-bottom: 2px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .countdown {
+            color: var(--neon-green);
+            font-size: 1.4rem;
+            font-weight: 300;
+            letter-spacing: 0.1rem;
+        }
+
+        .countdown span {
+            font-weight: 400;
+        }
+
+        /* Update grid layout */
+        .grid-container {
+            grid-template-rows: auto auto auto auto auto auto !important;
+        }
+
+        .video-space {
+            grid-row: 2 / span 4;
+        }
+
+        .configure-box {
+            grid-column: 1;
+            grid-row: 3;
+        }
+
+        .timer-box {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .metric-box p {
+            margin: 3px 0;
+            font-size: 0.75rem;
+        }
+
+        .locked-box {
+            position: relative;
+            height: calc((100vh - 535px) / 3);
+            padding: 8px !important;
+            overflow: hidden;
+            grid-column: 1;
+            opacity: 0.8;
+            margin-bottom: 2px;
+        }
+
+        .locked-box:last-child {
+            margin-bottom: 0;
+        }
+
+        .lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 4;
+            background: rgba(0, 0, 0, 0.3);
+            gap: 5px;
+        }
+
+        .fa-lock {
+            color: var(--neon-green);
+            font-size: 1.2rem;
+            opacity: 0.8;
+            z-index: 6;
+        }
+
+        .pro-label {
+            color: var(--neon-green);
+            font-size: 0.7rem;
+            opacity: 0.8;
+            letter-spacing: 0.1rem;
+            text-transform: uppercase;
+        }
+
+        .locked-box h3 {
+            position: relative;
+            z-index: 2;
+            opacity: 0.7;
+            font-size: 0.8rem;
+            margin: 0;
+            padding: 10px 0;
+            margin-top: 15px;
+        }
+
+        .kol-box {
+            grid-row: 3;
+        }
+
+        .analyzer-box {
+            grid-row: 4;
+        }
+
+        /* Last box */
+        .locked-box:last-child {
+            grid-row: 5;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .wallet-btn {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+        }
+
+        .wallet-btn:hover {
+            background: transparent;
+            color: var(--neon-green);
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 68, 68, 0.15);
+            border: 1px solid #ff4444;
+            color: #ff4444;
+            padding: 12px 15px;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transform: translateY(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            font-size: 0.8rem;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.1);
+            max-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+        }
+
+        .notification-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .notification-text .line1,
+        .notification-text .line2 {
+            color: #ff4444;
+        }
+
+        .locked-dropdown {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            padding: 8px 12px;
+            background: rgba(65, 147, 106, 0.1);
+            border: 1px solid rgba(65, 147, 106, 0.2);
+            border-radius: 4px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+            text-align: left;
+            backdrop-filter: blur(4px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .locked-dropdown::after {
+            content: '▼';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.3;
+        }
+
+        .locked-input {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            padding: 8px 12px;
+            background: rgba(65, 147, 106, 0.1);
+            border: 1px solid rgba(65, 147, 106, 0.2);
+            border-radius: 4px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+            text-align: left;
+            backdrop-filter: blur(4px);
+            pointer-events: none;
+            z-index: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .locked-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes chainSlide {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: -48px 0;
+            }
+        }
+
+        .chain-container {
+            position: absolute;
+            top: 180px;
+            left: 0;
+            width: 33.33%;
+            height: 400px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .continuous-chain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 141.4%;
+            height: 3px;
+            background: repeating-linear-gradient(90deg,
+                var(--neon-green) 0px,
+                var(--neon-green) 4px,
+                transparent 4px,
+                transparent 8px
+            );
+            opacity: 0.5;
+            transform-origin: top left;
+            transform: rotate(45deg);
+            box-shadow: 0 0 8px var(--neon-green);
+            animation: chainMove 2s linear infinite;
+        }
+
+        @keyframes chainMove {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: -16px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-left">
+            <span style="color: #41936a; cursor: pointer;" onclick="window.location.href='index.html'">
+                >_ SWARMLITE
+            </span>
+        </div>
+        <div class="nav-center">
+            <a href="#" class="active">TERMINAL</a>
+            <a href="monitor.html">MONITORS</a>
+        </div>
+        <div class="nav-right">
+            <button class="connect-btn" onclick="window.open('https://x.com/Swarm_Lite')">TWITTER</button>
+            <button class="connect-btn wallet-btn">CONNECT WALLET</button>
+        </div>
+    </nav>
+    
+    <div class="grid-container">
+        <!-- System Metrics Box -->
+        <div class="grid-box">
+            <h3>SYSTEM METRICS</h3>
+            <div class="metrics-container">
+                <div class="metric-box">
+                    <h4>Response Time</h4>
+                    <div class="value" id="processingSpeed">0ms</div>
+                    <p>Average signal processing</p>
+                </div>
+                <div class="metric-box">
+                    <h4>Accuracy Rate</h4>
+                    <div class="value" id="accuracyRate">0%</div>
+                    <p>Signal validation accuracy</p>
+                </div>
+            </div>
+            <button class="configure-button" onclick="window.location.href='monitor.html'">
+                CONFIGURE MONITOR
+            </button>
+        </div>
+        
+        <!-- Initialization Protocol (moved up) -->
+        <div class="grid-box protocol">
+            <h3>INITIALIZATION PROTOCOL</h3>
+            <div class="steps">
+                <div class="step">
+                    <span class="step-num">01</span>
+                    <span class="step-label">Configure</span>
+                    <span class="step-desc">Set monitoring parameters</span>
+                </div>
+                <div class="step">
+                    <span class="step-num">02</span>
+                    <span class="step-label">Integration</span>
+                    <span class="step-desc">Connect Discord webhook</span>
+                </div>
+                <div class="step">
+                    <span class="step-num">03</span>
+                    <span class="step-label">Processing</span>
+                    <span class="step-desc">Receive real-time alerts</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contract Info Box (moved down) -->
+        <div class="grid-box contract-box">
+            <div class="contract-info">
+                <div class="info-item">
+                    <h4>DEV SUPPLY</h4>
+                    <p>5%</p>
+                </div>
+                <div class="info-item">
+                    <h4>TICKER</h4>
+                    <p>LITE</p>
+                </div>
+                <div class="info-item">
+                    <h4>CONTRACT ADDRESS</h4>
+                    <p class="contract-address">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Configure Monitor Button -->
+        <div class="grid-box configure-box">
+            <button class="configure-button" onclick="window.location.href='monitor.html'">
+                CONFIGURE MONITOR
+            </button>
+            </div>
+            
+        <!-- Timer Box -->
+        <div class="grid-box timer-box">
+            <h3>COUNTDOWN</h3>
+            <div class="countdown" id="countdown">
+                <span id="hours">10</span>h 
+                <span id="minutes">00</span>m 
+                <span id="seconds">00</span>s
+            </div>
+        </div>
+        
+        <!-- Video Space -->
+        <div class="video-space">
+            <video loop playsinline>
+                <source src="./assets/Nexus_AI_9.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <button class="play-button">
+                <i class="fas fa-play"></i>
+            </button>
+        </div>
+
+        <!-- Add after the countdown box -->
+        <div class="grid-box locked-box kol-box">
+            <div class="lock-overlay">
+                <i class="fas fa-lock"></i>
+                <span class="pro-label">PRO</span>
+                </div>
+            <h3>ALPHA GROUP'S SCRAPER</h3>
+            <div class="locked-dropdown">Select Groups To Track</div>
+            </div>
+            
+        <div class="grid-box locked-box analyzer-box">
+            <div class="lock-overlay">
+                <i class="fas fa-lock"></i>
+                <span class="pro-label">PRO</span>
+            </div>
+            <h3>SWARM ANALYZER</h3>
+            <input type="text" class="locked-input" placeholder="Enter Contract Address" disabled>
+        </div>
+
+        <div class="grid-box locked-box">
+            <div class="lock-overlay">
+                <i class="fas fa-lock"></i>
+                <span class="pro-label">PRO</span>
+                </div>
+            <h3>CABAL CHECKER</h3>
+            <input type="text" class="locked-input" placeholder="Check Contract For Cabal" disabled>
+                    </div>
+                </div>
+
+    <div class="notification" id="walletNotification">
+        <div class="notification-text">
+            <div class="line1">Wallet connection currently disabled.</div>
+            <div class="line2">Please refer to the countdown timer.</div>
+        </div>
+    </div>
+
+    <script>
+        // Countdown Timer
+        function updateCountdown() {
+            const targetDate = new Date('2025-01-17T23:00:00Z');
+            const now = new Date();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                return;
+            }
+
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown();  // Initial call
+
+        function updateProcessingSpeed() {
+            document.getElementById('processingSpeed').textContent = 
+                Math.floor(Math.random() * (180 - 50 + 1) + 50) + 'ms';
+            setTimeout(updateProcessingSpeed, 800);  // Update every 0.8 seconds
+        }
+
+        function updateAccuracyRate() {
+            document.getElementById('accuracyRate').textContent = 
+                (Math.random() * (99.8 - 98.1) + 98.1).toFixed(1) + '%';
+            setTimeout(updateAccuracyRate, 1300);  // Update every 1.3 seconds
+        }
+
+        // Start both updates
+        updateProcessingSpeed();
+        updateAccuracyRate();
+
+        // Wallet notification handler
+        document.querySelector('.wallet-btn').addEventListener('click', function() {
+            const notification = document.getElementById('walletNotification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        });
+
+        // Video player functionality
+        const videoSpace = document.querySelector('.video-space');
+        const video = videoSpace.querySelector('video');
+        const playButton = videoSpace.querySelector('.play-button');
+
+        // Wait for video metadata to load before showing
+        video.addEventListener('loadedmetadata', function() {
+            setTimeout(() => {
+                videoSpace.classList.add('loaded');
+            }, 1000); // 1 second delay after page load
+        });
+
+        playButton.addEventListener('click', function() {
+            if (video.paused) {
+                video.play();
+                videoSpace.classList.add('playing');
+                playButton.querySelector('i').classList.remove('fa-play');
+                playButton.querySelector('i').classList.add('fa-pause');
+            } else {
+                video.pause();
+                videoSpace.classList.remove('playing');
+                playButton.style.visibility = 'visible';
+                playButton.querySelector('i').classList.remove('fa-pause');
+                playButton.querySelector('i').classList.add('fa-play');
+            }
+        });
+
+        video.addEventListener('click', function() {
+            if (video.paused) {
+                video.play();
+                videoSpace.classList.add('playing');
+                playButton.style.visibility = 'visible';
+                playButton.querySelector('i').classList.remove('fa-play');
+                playButton.querySelector('i').classList.add('fa-pause');
+            } else {
+                video.pause();
+                videoSpace.classList.remove('playing');
+                playButton.style.visibility = 'visible';
+                playButton.querySelector('i').classList.remove('fa-pause');
+                playButton.querySelector('i').classList.add('fa-play');
+            }
+        });
+
+        video.addEventListener('pause', function() {
+            videoSpace.classList.remove('playing');
+            playButton.style.visibility = 'visible';
+            playButton.querySelector('i').classList.remove('fa-pause');
+            playButton.querySelector('i').classList.add('fa-play');
+        });
+    </script>
+</body>
+</html> 

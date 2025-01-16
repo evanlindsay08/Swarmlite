@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWARMLITE</title>
+    <link rel="icon" type="image/png" href="images/SL.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/loading.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/transition.css">
+    <style>
+        .top-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 9999;
+            background: var(--dark-bg);
+            padding: 10px;
+        }
+
+        .top-title h2 {
+            color: #41936a !important;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.1rem;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        #typing-title {
+            min-height: 1rem;
+            display: block;
+        }
+
+        .contract-button {
+            padding: 8px 20px;
+            font-size: 1rem;
+            min-width: 400px;
+        }
+
+        .contract-section {
+            margin-bottom: 20px;
+        }
+
+        .copy-icon {
+            font-size: 1rem;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="active">
+        <div class="top-title">
+            <h2 id="typing-title"></h2>
+        </div>
+
+        <div class="center-content">
+            <h1 class="main-title">
+                <span class="neuro">S W A R M</span><span class="nix"> L I T E</span>
+            </h1>
+            <p class="subtitle">ADVANCED BLOCKCHAIN MONITORING SYSTEM</p>
+            <div class="button-container">
+                <button class="action-button green" onclick="window.location.href='main.html'">DASHBOARD</button>
+                <button class="action-button white" onclick="window.location.href='monitor.html'">MONITORS</button>
+            </div>
+        </div>
+        
+        <div class="terminal-section">
+            <div class="command-lines">
+                <div class="command-line">> Initializing core systems...</div>
+                <div class="command-line">> Loading neural networks...</div>
+                <div class="command-line">> Establishing secure connection...</div>
+                <div class="command-line">> System ready...</div>
+            </div>
+        </div>
+
+        <div class="contract-section">
+            <button class="contract-button" type="button">
+                <span class="contract-text" id="contractText">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span>
+                <span class="copy-icon">⎘</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Comment out one of these scripts -->
+    <script src="js/typing.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/transition.js"></script>
+</body>
+</html> 

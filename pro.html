@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuraLix Pro</title>
+    <link rel="icon" type="image/png" href="images/NN.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="stylesheet" href="css/transition.css">
+    <style>
+        .coming-soon {
+            text-align: center;
+            padding: 100px 0 50px;
+            background: linear-gradient(180deg, rgba(65, 147, 106, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+            border-radius: 12px;
+            margin: 80px 20px 40px;
+        }
+
+        .coming-soon h1 {
+            font-size: 4rem;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+            text-shadow: 0 0 20px rgba(65, 147, 106, 0.5);
+        }
+
+        .pro-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding: 0 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(65, 147, 106, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px rgba(65, 147, 106, 0.1);
+        }
+
+        .feature-box i {
+            font-size: 2.5rem;
+            color: var(--neon-green);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-box h3 {
+            color: white;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .feature-box p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .nav-link.pro {
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .nav-link.pro:hover {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+        }
+    </style>
+</head>
+<body class="main-page">
+    <nav class="main-nav">
+        <div class="nav-left">
+            <span class="terminal-icon">›_</span>NeuraLix
+        </div>
+        <div class="nav-links">
+            <a href="main.html">Terminal</a>
+            <a href="monitor.html">Monitors</a>
+            <a href="whitepaper.html">Whitepaper</a>
+        </div>
+    </nav>
+    
+    <div class="main-container">
+        <div class="coming-soon">
+            <h1>Coming Soon!</h1>
+            <h2>Pro Features</h2>
+        </div>
+        
+        <div class="pro-features">
+            <div class="feature-box">
+                <h3>Data Storage</h3>
+                <p>Store and analyze your historical monitoring data. Access successful parameters and track your most profitable strategies over time.</p>
+            </div>
+            
+            <div class="feature-box">
+                <h3>Automated Strategies</h3>
+                <p>Deploy automated monitoring systems using proven parameters. Let the system execute your most successful strategies automatically.</p>
+            </div>
+            
+            <div class="feature-box">
+                <h3>Advanced Analytics</h3>
+                <p>Access deep market insights and pattern recognition. Discover profitable opportunities through advanced statistical analysis.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/transition.js"></script>
+</body>
+</html>

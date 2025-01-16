@@ -1,0 +1,215 @@
+.monitor-page {
+    background-color: var(--dark-bg);
+    min-height: 100vh;
+    color: white;
+    overflow-y: auto;
+}
+
+.monitor-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 120px 2rem 4rem;
+    min-height: 100vh;
+}
+
+.monitor-header {
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
+.monitor-header h1 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    color: var(--neon-green);
+    line-height: 1.2;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.monitor-header h1:hover {
+    opacity: 0.8;
+}
+
+.monitor-header .hero-subtitle {
+    color: var(--neon-green);
+    font-size: 1.1rem;
+    opacity: 0.8;
+    letter-spacing: 0.1rem;
+    margin-bottom: 3rem;
+}
+
+.monitor-form {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    border: 1px solid rgba(65, 147, 106, 0.2);
+    padding: 3rem;
+    backdrop-filter: blur(10px);
+}
+
+.form-section {
+    margin-bottom: 3rem;
+}
+
+.form-section h2 {
+    color: var(--neon-green);
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.1rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.form-group input[type="number"],
+.form-group input[type="url"],
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(65, 147, 106, 0.3);
+    border-radius: 4px;
+    color: white;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--neon-green);
+    box-shadow: 0 0 10px rgba(65, 147, 106, 0.2);
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.8rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(65, 147, 106, 0.2);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.checkbox-group label:hover {
+    background: rgba(65, 147, 106, 0.1);
+    border-color: var(--neon-green);
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 0.8rem;
+    accent-color: var(--neon-green);
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 4rem;
+}
+
+.submit-button {
+    background: transparent;
+    border: 2px solid var(--neon-green);
+    color: var(--neon-green);
+    padding: 1.2rem 3.5rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    min-width: 280px;
+    background: rgba(65, 147, 106, 0.1);
+    box-shadow: 0 0 15px rgba(65, 147, 106, 0.1);
+}
+
+.submit-button:hover {
+    background: var(--neon-green);
+    color: var(--dark-bg);
+    box-shadow: 0 0 25px rgba(65, 147, 106, 0.4);
+}
+
+.site-title {
+    color: var(--neon-green);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 1rem;
+    letter-spacing: 0.1rem;
+    opacity: 1;
+}
+
+.terminal-icon {
+    font-size: 1rem;
+    color: var(--neon-green);
+}
+
+.title-text {
+    color: var(--neon-green);
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    margin-left: auto;
+    margin-right: 1rem;
+    align-items: center;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.1rem;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    opacity: 1;
+    color: white;
+}
+
+.nav-link.active {
+    opacity: 1;
+    color: var(--neon-green);
+}
+
+.main-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: var(--dark-bg);
+    border-bottom: 1px solid rgba(65, 147, 106, 0.2);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+/* Add responsive grid for smaller screens */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+} 

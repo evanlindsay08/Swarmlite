@@ -1,0 +1,15 @@
+/* Initial state for all pages */
+body {
+    opacity: 0;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity;
+}
+
+.fade-transition {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.fade-out {
+    opacity: 0;
+} 

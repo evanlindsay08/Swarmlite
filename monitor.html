@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwarmLite</title>
+    <link rel="icon" type="image/png" href="images/SL.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/monitor.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/transition.css">
+    <style>
+        :root {
+            --neon-green: #41936a;
+            --dark-bg: #0f1014;
+            --box-bg: rgba(20, 22, 28, 0.95);
+        }
+
+        .monitor-title {
+            color: var(--neon-green) !important;
+            cursor: pointer;
+        }
+
+        .top-nav {
+            background: transparent;
+            padding: 20px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(65, 147, 106, 0.2);
+        }
+
+        .nav-left .logo {
+            color: var(--neon-green);
+            text-decoration: none;
+            font-weight: 500;
+            letter-spacing: 0.1rem;
+            font-size: 0.9rem;
+        }
+
+        .nav-center a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.1rem;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            margin: 0 15px;
+            text-transform: uppercase;
+        }
+
+        .nav-center a.active {
+            color: var(--neon-green);
+            opacity: 1;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .nav-btn.filled {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+        }
+
+        .nav-btn:hover {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+        }
+
+        .nav-btn.filled:hover {
+            background: transparent;
+            color: var(--neon-green);
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(65, 147, 106, 0.15);
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 12px 15px;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transform: translateY(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            font-size: 0.8rem;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.1);
+            max-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+        }
+
+        .pro-tag {
+            color: var(--neon-green);
+            opacity: 0.8;
+            font-size: 0.85em;
+        }
+
+        .notification .line1,
+        .notification .line2 {
+            color: var(--neon-green);
+        }
+
+        .notification-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .notification-text .line1,
+        .notification-text .line2 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="monitor-page">
+    <nav class="top-nav">
+        <div class="nav-left">
+            <span style="color: #41936a; cursor: pointer;" onclick="window.location.href='index.html'">
+                >_ SWARMLITE
+            </span>
+        </div>
+        <div class="nav-center">
+            <a href="main.html">TERMINAL</a>
+            <a href="#" class="active">MONITORS</a>
+        </div>
+        <div class="nav-right">
+            <button class="nav-btn" onclick="window.open('https://x.com/Swarm_Lite')">TWITTER</button>
+            <button class="nav-btn filled">CONNECT WALLET</button>
+        </div>
+    </nav>
+
+    <div class="monitor-container">
+        <div class="monitor-header">
+            <h1 class="monitor-title">Advanced Swarm<br>Monitoring System</h1>
+            <p class="hero-subtitle">Configure autonomous monitoring parameters</p>
+        </div>
+
+        <form class="monitor-form" id="monitorForm">
+            <div class="form-section">
+                <h2>Monitor Parameters</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="minVolume">Minimum Volume (SOL)</label>
+                        <input type="number" id="minVolume" required min="0" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="minMcap">Minimum Market Cap (USD)</label>
+                        <input type="number" id="minMcap" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="maxMcap">Maximum Market Cap (USD)</label>
+                        <input type="number" id="maxMcap" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="devAddress">Developer Address</label>
+                        <input type="text" id="devAddress">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Trading Requirements</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="minUniqueBuyers">Minimum Unique Buyers</label>
+                        <input type="number" id="minUniqueBuyers" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="buySellRatio">Buy/Sell Ratio (0-1)</label>
+                        <input type="number" id="buySellRatio" min="0" max="1" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="minTradeCount">Minimum Trade Count</label>
+                        <input type="number" id="minTradeCount" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="maxLastTradeAge">Max Last Trade Age (seconds)</label>
+                        <input type="number" id="maxLastTradeAge" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="minReplyCount">Minimum Reply Count</label>
+                        <input type="number" id="minReplyCount" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Token Validation</h2>
+                <div class="form-grid">
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="uniqueName" class="pro-feature">
+                            <span>Unique Name<span class="pro-tag"> - PRO</span></span>
+                        </label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="uniqueTicker" class="pro-feature">
+                            <span>Unique Ticker<span class="pro-tag"> - PRO</span></span>
+                        </label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="uniqueImage" class="pro-feature">
+                            <span>Unique Image<span class="pro-tag"> - PRO</span></span>
+                        </label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="uniqueSocials" class="pro-feature">
+                            <span>Unique Socials<span class="pro-tag"> - PRO</span></span>
+                        </label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="cexFunded" class="pro-feature">
+                            <span>Dev CEX Funded<span class="pro-tag"> - PRO</span></span>
+                        </label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="newTokensOnly">
+                            <span>New Tokens Only</span>
+                        </label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="devSoldCheck">
+                            <span>Check Dev Sales</span>
+                        </label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="excludeNsfw">
+                            <span>Exclude NSFW</span>
+                        </label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="requireCompleteData" class="pro-feature">
+                            <span>Require Complete Data<span class="pro-tag"> - PRO</span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Social Requirements</h2>
+                <div class="form-grid">
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="hasSocials">
+                            <span>Any Social Links</span>
+                        </label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="hasTwitter">
+                            <span>Twitter Required</span>
+                        </label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="hasTelegram">
+                            <span>Telegram Required</span>
+                        </label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="hasWebsite">
+                            <span>Website Required</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Webhook Configuration</h2>
+                <div class="form-group">
+                    <label for="webhookUrl">Discord Webhook URL</label>
+                    <input type="url" id="webhookUrl" required>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="submit-button">Initialize Monitor</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="js/monitor.js"></script>
+    <script src="js/transition.js"></script>
+    <script>
+        // Add click handler for the title
+        document.querySelector('.monitor-title').addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+
+        // Function to hide all notifications
+        function hideAllNotifications() {
+            document.querySelectorAll('.notification').forEach(notif => {
+                notif.classList.remove('show');
+            });
+        }
+
+        document.querySelector('.nav-btn.filled').addEventListener('click', function() {
+            hideAllNotifications();
+            const notification = document.getElementById('walletNotification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        });
+
+        // Pro feature handling
+        document.querySelectorAll('.pro-feature').forEach(checkbox => {
+            checkbox.addEventListener('change', function(e) {
+                if (this.checked) {
+                    // Prevent checkbox from being checked
+                    this.checked = false;
+                    
+                    hideAllNotifications();
+                    // Show pro notification
+                    const notification = document.getElementById('proNotification');
+                    notification.classList.add('show');
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                    }, 5000);
+                }
+            });
+        });
+
+        // Form submission handling
+        document.getElementById('monitorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+        });
+    </script>
+
+    <!-- Notifications -->
+    <div class="notification" id="walletNotification">
+        <div class="notification-text">
+            <div class="line1">Wallet connection is currently disabled</div>
+            <div class="line2">Please refer to the countdown timer</div>
+        </div>
+    </div>
+
+    <div class="notification pro" id="proNotification">
+        <div class="notification-text">
+            <div class="line1">This feature is reserved for premium members only.</div>
+        </div>
+    </div>
+</body>
+</html> 
